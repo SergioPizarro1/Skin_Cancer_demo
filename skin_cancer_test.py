@@ -6,6 +6,7 @@ from matplotlib import pyplot
 import numpy
 
 if __name__ == "__main__":
+
     transforms_train=transforms.Compose([
         transforms.Resize((224,224)),
         transforms.RandomResizedCrop(224),
@@ -24,9 +25,6 @@ if __name__ == "__main__":
     train_dir = "/home/224A1087sergio/Skin_Cancer_demo/train"
     test_dir = "/home/224A1087sergio/Skin_Cancer_demo/test"
 
-
-
-
     train_dataset = datasets.ImageFolder(train_dir, transforms_train)
     test_dataset = datasets.ImageFolder(test_dir, transforms_test)
 
@@ -38,7 +36,7 @@ if __name__ == "__main__":
     print(num_features)
 
     model.fc = torch.nn.Linear(512, 2)
-    model = model.to('cuda')
+    model = model.to('cpu')
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.fc.parameters(), lr=0.00001)
 
@@ -58,8 +56,8 @@ if __name__ == "__main__":
         running_corrects = 0
 
         for i, (inputs, labels) in enumerate(train_dataloader):
-            inputs = inputs.to('cuda')
-            labels = labels.to('cuda')
+            inputs = inputs.to('cpu')
+            labels = labels.to('cpu')
 
             optimizer.zero_grad()
             outputs = model(inputs)
@@ -85,8 +83,8 @@ if __name__ == "__main__":
             running_corrects = 0
 
         for inputs, labels in test_dataloader:
-            inputs = inputs.to('cuda')
-            labels = labels.to('cuda')
+            inputs = inputs.to('cpu')
+            labels = labels.to('cpu')
             outputs = model(inputs)
             _, preds = torch.max(outputs, 1)
             loss = criterion(outputs, labels)

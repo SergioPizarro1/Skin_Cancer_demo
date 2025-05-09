@@ -21,8 +21,8 @@ if __name__ == "__main__":
         transforms.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])
         ])
 
-    train_dir = "/content/drive/MyDrive/Skin_cancer/train"
-    test_dir = "/content/drive/MyDrive/Skin_cancer/test"
+    train_dir = "/home/224A1087sergio/Skin_Cancer_demo/train"
+    test_dir = "/home/224A1087sergio/Skin_Cancer_demo/test"
 
 
 

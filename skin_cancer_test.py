@@ -1,5 +1,6 @@
 # Bla bla bkla
 
+#Mercedes es mi diosa
 from torchvision import transforms, datasets
 import torchvision
 import torch

@@ -8,6 +8,8 @@ import time
 from matplotlib import pyplot
 import numpy
 
+device='cuda'
+
 if __name__ == "__main__":
 
     transforms_train=transforms.Compose([
@@ -39,7 +41,7 @@ if __name__ == "__main__":
     print(num_features)
 
     model.fc = torch.nn.Linear(512, 2)
-    model = model.to('cpu')
+    model = model.to(device)
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.fc.parameters(), lr=0.00001)
 
@@ -48,7 +50,7 @@ if __name__ == "__main__":
     test_loss = []
     test_accuracy = []
 
-    num_epochs = 100
+    num_epochs = 10
     start_time = time.time()
 
     for epoch in range(num_epochs):
@@ -59,8 +61,8 @@ if __name__ == "__main__":
         running_corrects = 0
 
         for i, (inputs, labels) in enumerate(train_dataloader):
-            inputs = inputs.to('cpu')
-            labels = labels.to('cpu')
+            inputs = inputs.to(device)
+            labels = labels.to(device)
 
             optimizer.zero_grad()
             outputs = model(inputs)
@@ -86,8 +88,8 @@ if __name__ == "__main__":
             running_corrects = 0
 
         for inputs, labels in test_dataloader:
-            inputs = inputs.to('cpu')
-            labels = labels.to('cpu')
+            inputs = inputs.to(device)
+            labels = labels.to(device)
             outputs = model(inputs)
             _, preds = torch.max(outputs, 1)
             loss = criterion(outputs, labels)
@@ -106,6 +108,7 @@ if __name__ == "__main__":
     pyplot.plot(train_loss, label='TRAIN')
     pyplot.legend()
     pyplot.title("Loss")
+    pyplot.savefig("Loss.jpg", format='jpg')
     pyplot.show()
 
     pyplot.clf()
@@ -113,4 +116,5 @@ if __name__ == "__main__":
     pyplot.plot(train_accuracy, label='TRAIN')
     pyplot.legend()
     pyplot.title("Accuracy")
+    pyplot.savefig("Accuracy.jpg", format='jpg')
     pyplot.show()
